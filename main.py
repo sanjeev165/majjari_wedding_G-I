@@ -9,6 +9,8 @@ import pandas as pd
 import os
 from datetime import datetime
 import streamlit.components.v1 as components
+import base64
+from io import BytesIO
 
 import streamlit.components.v1 as components
 
@@ -95,19 +97,21 @@ def load_image(path, fallback_shape=(1600, 600), make_round=False):
 
 # --- Stylish CSS ---st.markdown
 # This CSS creates a high-end feel: custom font, glass cards, centered hero text.
-HERO_CSS = HERO_CSS = """
+HERO_CSS = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap');
 
 :root{
-  --accent:#a27b5c;
+  --accent:#a27b5c; /* warm gold */
   --muted:#5b5b5b;
 }
 
+/* Page background */
 [data-testid="stAppViewContainer"] {
   background: linear-gradient(180deg, #fffdfa 0%, #f7f5f2 100%);
 }
 
+/* Hero/banner */
 .hero {
   position: relative;
   width: 100%;
@@ -143,25 +147,6 @@ HERO_CSS = HERO_CSS = """
   opacity: 0.95;
 }
 
-/* Responsive styles for mobile */
-@media (max-width: 600px) {
-  .hero {
-    height: 260px;
-    border-radius: 10px;
-  }
-  .hero h1 {
-    font-size: 28px;
-    padding: 0 10px;
-  }
-  .hero p {
-    font-size: 14px;
-    padding: 0 10px;
-  }
-  .hero-content {
-    width: 90%;
-  }
-}
-
 .card {
   background: rgba(255,255,255,0.75);
   backdrop-filter: blur(6px);
@@ -193,36 +178,30 @@ HERO_CSS = HERO_CSS = """
   border-radius: 10px;
   text-decoration: none;
 }
+/* Responsive styles for mobile */
+@media (max-width: 600px) {
+  .hero {
+    height: 220px;
+    border-radius: 10px;
+  }
+  .hero-content {
+    width: 98%;
+    padding: 0 2vw;
+  }
+  .hero h1 {
+    font-size: 22px;
+  }
+  .hero p {
+    font-size: 12px;
+  }
+}
 
 </style>
 """
 
 st.markdown(HERO_CSS, unsafe_allow_html=True)
 
-# st.markdown(
-#     """
-#     <div class="hero">
-#         <img src="https://yourdomain.com/banner.jpg" 
-#              style="width:100%; height:100%; object-fit: cover;">
-#         <div class="hero-content">
-#             <h1>Majjari Wedding Celebrations</h1>
-#             <p>Join us for a journey of love and togetherness</p>
-#         </div>
-#     </div>
-#     """,
-#     unsafe_allow_html=True
-# )
 
-# # --- Header with logo and names ---
-# logo_path = os.path.join(ASSETS_DIR, "logo2.png")
-# if os.path.exists(logo_path):
-#     logo = Image.open(logo_path)
-#     st.image(logo, width=96)
-# else:
-#     st.markdown("<h3 style='font-family: Playfair Display, serif; m33argin:0;'>G & I</h3>", unsafe_allow_html=True)
-
-# Small tagline
-#st.markdown("<div class='small-muted'>We invite you to celebrate our wedding</div>", unsafe_allow_html=True)
 st.write("---")
 
 # --- Hero / Banner ---
@@ -241,7 +220,7 @@ if os.path.exists(banner_path):
     st.markdown(
         """
         <div style='text-align:center; margin-top:-200px; color:white; font-family: "Playfair Display", serif;'>
-            <h1 style='font-size:48px;'>Gnana Sanjeev Weds Indrani</h1>
+            <h1 style='font-size:35px;'>Gnana Sanjeev Weds Indrani</h1>
         </div>
         """,
         unsafe_allow_html=True
@@ -250,7 +229,6 @@ else:
     # fallback: simple image with overlaid text using columns
     st.image(load_image(banner_path), use_container_width=True)
     st.markdown("<div style='text-align:center; margin-top:-160px; color:#111;'><h1 style='font-family: Playfair Display, serif; color:#111;'>Gnana Sanjeev Majjari & Indrani </h1><p style='color:#333;'>Oct 02, 2025 · Villa dei Fiori · Tuscany, Italy</p></div>", unsafe_allow_html=True)
-
 # --- Main content ---
 with st.container():
     st.markdown("<div class='card'>", unsafe_allow_html=True)
@@ -276,11 +254,17 @@ with st.container():
 
     with col2:
         st.markdown("<div class='section-title'>Quick Info</div>", unsafe_allow_html=True)
-        st.markdown("- Venue: Villa dei Fiori\n- Address: Via delle Rose 12, Tuscany\n- Accommodation: See the Travel & Stay tab")
+        st.markdown(
+              "- :orange[Venue]: Dr.Thyagaraja Reddy Kalyana Mantapam\n"
+              "- :orange[Address]: KesavaReddySchool Road, Yerraguntla Rd, Potladutti, Andhra Pradesh 515361\n"
+              "- :orange[Accommodation]: Please help us arrange your accommodation"
+          )
+        st.markdown("🗺️ [Find maps location](https://maps.app.goo.gl/yeBvnKUzmEpMNXmv5)")
         st.markdown("<br>", unsafe_allow_html=True)
         # RSVP shortcut
-        if st.button("RSVP — Let us know"):
+        if st.button("Let us know your visit", type="primary", use_container_width=True):
             st.switch_page("pages/forms.py")
+        
             st.markdown("<script>window.location.href='#rsvp-section'</script>", unsafe_allow_html=True)
 
     st.markdown("</div>", unsafe_allow_html=True)
@@ -317,20 +301,16 @@ st.markdown(
     """
     - Nearest airport: KADAPA (CDP). Shuttle service will be provided from the airport to the venue.
     - Nearest Railway station: Yerraguntla (YA).
-    - Nearest Town: Proddutor 
+    - Nearest Bus Stand: Proddutor 
     - Contact our travel coordinator: 9652101998
     """
 )
-
-#st.write("---")
-
-# --- Registry ---
-# #
 st.write("---")
 
 # --- Contact / Footer ---
-st.markdown("<h4 style='font-family: Playfair Display, serif;'>Contact</h4>", unsafe_allow_html=True)
-st.markdown("If you have questions, email us at hello@wedding-email.example")
+st.markdown("<h4 style='font-family: Playfair Display, serif;'>Google maps</h4>", unsafe_allow_html=True)
+st.markdown("🗺️ [Find maps location](https://maps.app.goo.gl/yeBvnKUzmEpMNXmv5)")
+#st.markdown("find maps location https://maps.app.goo.gl/yeBvnKUzmEpMNXmv5")
 
 st.markdown("<div style='text-align:center; margin-top:30px; color:#7b7b7b;'>Designed with ❤️ · Please replace placeholder assets in the assets/ folder.</div>", unsafe_allow_html=True)
 
@@ -350,3 +330,30 @@ st.markdown("<div style='text-align:center; margin-top:30px; color:#7b7b7b;'>Des
 
 # st.markdown("---")
 # st.markdown("We can't wait to celebrate with you! 🎉")
+
+
+
+# st.markdown(
+#     """
+#     <div class="hero">
+#         <img src="https://yourdomain.com/banner.jpg" 
+#              style="width:100%; height:100%; object-fit: cover;">
+#         <div class="hero-content">
+#             <h1>Majjari Wedding Celebrations</h1>
+#             <p>Join us for a journey of love and togetherness</p>
+#         </div>
+#     </div>
+#     """,
+#     unsafe_allow_html=True
+# )
+
+# # --- Header with logo and names ---
+# logo_path = os.path.join(ASSETS_DIR, "logo2.png")
+# if os.path.exists(logo_path):
+#     logo = Image.open(logo_path)
+#     st.image(logo, width=96)
+# else:
+#     st.markdown("<h3 style='font-family: Playfair Display, serif; m33argin:0;'>G & I</h3>", unsafe_allow_html=True)
+
+# Small tagline
+#st.markdown("<div class='small-muted'>We invite you to celebrate our wedding</div>", unsafe_allow_html=True)
