@@ -93,7 +93,7 @@ def load_image(path, fallback_shape=(1600, 600), make_round=False):
         return Image.new("RGB", fallback_shape, color=(245, 245, 245))
 
 
-# --- Stylish CSS ---
+# --- Stylish CSS ---st.markdown
 # This CSS creates a high-end feel: custom font, glass cards, centered hero text.
 HERO_CSS = """
 <style>
@@ -181,6 +181,20 @@ HERO_CSS = """
 """
 
 st.markdown(HERO_CSS, unsafe_allow_html=True)
+
+st.markdown(
+    """
+    <div class="hero">
+        <img src="https://yourdomain.com/banner.jpg" 
+             style="width:100%; height:100%; object-fit: cover;">
+        <div class="hero-content">
+            <h1>Majjari Wedding Celebrations</h1>
+            <p>Join us for a journey of love and togetherness</p>
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # # --- Header with logo and names ---
 # logo_path = os.path.join(ASSETS_DIR, "logo2.png")
