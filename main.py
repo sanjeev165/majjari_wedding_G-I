@@ -95,21 +95,19 @@ def load_image(path, fallback_shape=(1600, 600), make_round=False):
 
 # --- Stylish CSS ---st.markdown
 # This CSS creates a high-end feel: custom font, glass cards, centered hero text.
-HERO_CSS = """
+HERO_CSS = HERO_CSS = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap');
 
 :root{
-  --accent:#a27b5c; /* warm gold */
+  --accent:#a27b5c;
   --muted:#5b5b5b;
 }
 
-/* Page background */
 [data-testid="stAppViewContainer"] {
   background: linear-gradient(180deg, #fffdfa 0%, #f7f5f2 100%);
 }
 
-/* Hero/banner */
 .hero {
   position: relative;
   width: 100%;
@@ -143,6 +141,25 @@ HERO_CSS = """
   margin: 0;
   font-size: 18px;
   opacity: 0.95;
+}
+
+/* Responsive styles for mobile */
+@media (max-width: 600px) {
+  .hero {
+    height: 260px;
+    border-radius: 10px;
+  }
+  .hero h1 {
+    font-size: 28px;
+    padding: 0 10px;
+  }
+  .hero p {
+    font-size: 14px;
+    padding: 0 10px;
+  }
+  .hero-content {
+    width: 90%;
+  }
 }
 
 .card {
@@ -182,19 +199,19 @@ HERO_CSS = """
 
 st.markdown(HERO_CSS, unsafe_allow_html=True)
 
-st.markdown(
-    """
-    <div class="hero">
-        <img src="https://yourdomain.com/banner.jpg" 
-             style="width:100%; height:100%; object-fit: cover;">
-        <div class="hero-content">
-            <h1>Majjari Wedding Celebrations</h1>
-            <p>Join us for a journey of love and togetherness</p>
-        </div>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+# st.markdown(
+#     """
+#     <div class="hero">
+#         <img src="https://yourdomain.com/banner.jpg" 
+#              style="width:100%; height:100%; object-fit: cover;">
+#         <div class="hero-content">
+#             <h1>Majjari Wedding Celebrations</h1>
+#             <p>Join us for a journey of love and togetherness</p>
+#         </div>
+#     </div>
+#     """,
+#     unsafe_allow_html=True
+# )
 
 # # --- Header with logo and names ---
 # logo_path = os.path.join(ASSETS_DIR, "logo2.png")
