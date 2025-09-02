@@ -205,20 +205,12 @@ st.markdown(HERO_CSS, unsafe_allow_html=True)
 st.write("---")
 
 # --- Hero / Banner ---
-banner_path = os.path.join(ASSETS_DIR, "banner.png")
+banner_path = os.path.join(ASSETS_DIR, "banner.jpeg")
 
 banner_url = f"{banner_path}" if os.path.exists(banner_path) else ""
 if os.path.exists(banner_path):
     banner_img = Image.open(banner_path)
     st.image(banner_img, use_container_width=True)
-    st.markdown(
-        """
-        <div style='text-align:center; margin-top:-200px; color:white; font-family: "Playfair Display", serif;'>
-            <h1 style='font-size:35px;'>Gnana Sanjeev Weds Indrani</h1>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
 else:
     st.markdown("""
       <style>
