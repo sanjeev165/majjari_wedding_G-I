@@ -206,14 +206,8 @@ st.write("---")
 
 # --- Hero / Banner ---
 banner_path = os.path.join(ASSETS_DIR, "banner.png")
-# If user provided a banner.jpg in assets, it will be used as a background.
-# We render a full-width hero with overlaying text using HTML/CSS.
 
 banner_url = f"{banner_path}" if os.path.exists(banner_path) else ""
-
-
-    # Streamlit won't allow local file url in CSS background reliably in all deploys.
-    # So we render the image and then overlay text using an absolute positioned div.
 if os.path.exists(banner_path):
     banner_img = Image.open(banner_path)
     st.image(banner_img, use_container_width=True)
@@ -226,9 +220,50 @@ if os.path.exists(banner_path):
         unsafe_allow_html=True
     )
 else:
+    st.markdown("""
+      <style>
+      .banner-text {
+        text-align: center;
+        margin-top: -160px;           /* desktop/tablet default */
+        color: #111;
+      }
+      .banner-text h1 {
+        font-family: "Playfair Display", serif;
+        color: #111;
+        font-size: 36px;
+        margin: 0;
+      }
+      .banner-text p {
+        color: #333;
+        font-size: 16px;
+        margin: 4px 0 0 0;
+      }
+
+      /* Mobile adjustments */
+      @media (max-width: 600px) {
+        .banner-text {
+          margin-top: -80px;          /* reduce negative overlap on small screens */
+          padding: 0 12px;            /* add side padding to avoid edge clipping */
+        }
+        .banner-text h1 {
+          font-size: 20px;            /* smaller title for mobile */
+          line-height: 1.2;
+        }
+        .banner-text p {
+          font-size: 12px;
+        }
+      }
+      </style>
+      """, unsafe_allow_html=True)
     # fallback: simple image with overlaid text using columns
     st.image(load_image(banner_path), use_container_width=True)
-    st.markdown("<div style='text-align:center; margin-top:-160px; color:#111;'><h1 style='font-family: Playfair Display, serif; color:#111;'>Gnana Sanjeev Majjari & Indrani </h1><p style='color:#333;'>Oct 02, 2025 · Villa dei Fiori · Tuscany, Italy</p></div>", unsafe_allow_html=True)
+    #st.markdown("<div style='text-align:center; margin-top:-160px; color:#111;'><h1 style='font-family: Playfair Display, serif; color:#111;'>Gnana Sanjeev Majjari & Indrani </h1><p style='color:#333;'>Oct 02, 2025 · Villa dei Fiori · Tuscany, Italy</p></div>", unsafe_allow_html=True)
+    st.markdown("""
+      <div class="banner-text">
+        <h1>Gnana Sanjeev Majjari &amp; Indrani</h1>
+        <p>Oct 02, 2025 · Villa dei Fiori · Tuscany, Italy</p>
+      </div>
+      """, unsafe_allow_html=True)
 # --- Main content ---
 with st.container():
     st.markdown("<div class='card'>", unsafe_allow_html=True)
@@ -239,7 +274,7 @@ with st.container():
         st.markdown(
             """
             <p style='font-family: Inter, sans-serif; font-size:16px; color:#333;'>
-            We met on a rainy afternoon in Florence and instantly knew we were each other's home. After adventures through mountains and city streets, we invite you to join us as we say "I do" surrounded by family and friends.
+            We met in college, where my heart recognized him first. Through laughter, tears, and countless ups and downs, our bond only grew stronger. Years have passed, yet love feels brand new. This October, our forever begins officially, as we marry and continue the journey we started long ago.
             </p>
             """,
             unsafe_allow_html=True,
@@ -248,9 +283,9 @@ with st.container():
         st.markdown("<br>", unsafe_allow_html=True)
 
         st.markdown("<div class='section-title'>Event Details</div>", unsafe_allow_html=True)
-        st.write("**Ceremony** — 4:00 PM, Garden Terrace")
-        st.write("**Reception** — 6:30 PM, Grand Hall")
-        st.write("**Dress code** — Black tie optional")
+        st.write("**Haldi** — 1st-oct 11:00 AM, Home")
+        st.write("**Reception** — 1st-oct 6:30 PM, Mantapam")
+        st.write("**Marriage** —2nd-oct 9:00 AM to 10:00 AM, Mantapam")
 
     with col2:
         st.markdown("<div class='section-title'>Quick Info</div>", unsafe_allow_html=True)
@@ -302,58 +337,21 @@ st.markdown(
     - Nearest airport: KADAPA (CDP). Shuttle service will be provided from the airport to the venue.
     - Nearest Railway station: Yerraguntla (YA).
     - Nearest Bus Stand: Proddutor 
-    - Contact our travel coordinator: 9652101998
+    - Contact our travel coordinator:- 
+        Ganesh:9703082214,
+        Sagar:9680977454
+    - Accommodation coordinator:-
+        Chandu : 9440408475,
+        Krishna : 9603787072
+    - Additional Information:-
+        Hemanth : 9493385646
     """
 )
 st.write("---")
 
 # --- Contact / Footer ---
 st.markdown("<h4 style='font-family: Playfair Display, serif;'>Google maps</h4>", unsafe_allow_html=True)
-st.markdown("🗺️ [Find maps location](https://maps.app.goo.gl/yeBvnKUzmEpMNXmv5)")
-#st.markdown("find maps location https://maps.app.goo.gl/yeBvnKUzmEpMNXmv5")
+st.markdown("🗺️ [Find Mandapam location](https://maps.app.goo.gl/yeBvnKUzmEpMNXmv5)")
+st.markdown("🗺️ [Find Home location](https://maps.app.goo.gl/Yc1GxvSf3GYoWArW7)")
+st.markdown("<div style='text-align:center; margin-top:30px; color:#7b7b7b;'>Designed with ❤️ .</div>", unsafe_allow_html=True)
 
-st.markdown("<div style='text-align:center; margin-top:30px; color:#7b7b7b;'>Designed with ❤️ · Please replace placeholder assets in the assets/ folder.</div>", unsafe_allow_html=True)
-
-# --- End of app ---
-
-# Optional: Add couple photo
-# st.image("your_photo.jpg", width=400)
-
-# Optional: Map location (if you want)
-# st.map(latitude, longitude)
-
-# Generate and show QR code
-# url = "https://your-streamlit-app.streamlit.app"
-# qr = qrcode.make(url)
-# qr.save("invite_qr.png")
-# st.image("invite_qr.png", caption="Scan to view this invitation")
-
-# st.markdown("---")
-# st.markdown("We can't wait to celebrate with you! 🎉")
-
-
-
-# st.markdown(
-#     """
-#     <div class="hero">
-#         <img src="https://yourdomain.com/banner.jpg" 
-#              style="width:100%; height:100%; object-fit: cover;">
-#         <div class="hero-content">
-#             <h1>Majjari Wedding Celebrations</h1>
-#             <p>Join us for a journey of love and togetherness</p>
-#         </div>
-#     </div>
-#     """,
-#     unsafe_allow_html=True
-# )
-
-# # --- Header with logo and names ---
-# logo_path = os.path.join(ASSETS_DIR, "logo2.png")
-# if os.path.exists(logo_path):
-#     logo = Image.open(logo_path)
-#     st.image(logo, width=96)
-# else:
-#     st.markdown("<h3 style='font-family: Playfair Display, serif; m33argin:0;'>G & I</h3>", unsafe_allow_html=True)
-
-# Small tagline
-#st.markdown("<div class='small-muted'>We invite you to celebrate our wedding</div>", unsafe_allow_html=True)
